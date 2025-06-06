@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum AudioType {
 
-    DUBBED(1),
-    SUBTITLED(2);
+    DUBBED(0),
+    SUBTITLED(1);
 
     private final int value;
 
