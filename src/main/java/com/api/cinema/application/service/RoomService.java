@@ -9,11 +9,11 @@ import com.api.cinema.application.usecase.UpdateRoomUseCase;
 import com.api.cinema.domain.model.Room;
 import com.api.cinema.infrastructure.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoomService implements CreateRoomUseCase, GetRoomUseCase, UpdateRoomUseCase, DeleteRoomUseCase {
@@ -54,12 +54,7 @@ public class RoomService implements CreateRoomUseCase, GetRoomUseCase, UpdateRoo
     public RoomDTO update(long id, CreateRoomDTO createRoomDTO) {
         Room room = this.roomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("It was not possible to locate the provided id."));
-
-        room.setName(createRoomDTO.name());
-        room.setCapacity(createRoomDTO.capacity());
-        room.setRoomType(createRoomDTO.roomType());
-        room.setNumberOfRows(createRoomDTO.numberOfRows());
-        room.setNumberOfColumns(createRoomDTO.numberOfColumns());
+        BeanUtils.copyProperties(createRoomDTO, room, "id");
         Room updatedRoom = this.roomRepository.save(room);
         return this.objectMapper.convertValue(updatedRoom, RoomDTO.class);
     }

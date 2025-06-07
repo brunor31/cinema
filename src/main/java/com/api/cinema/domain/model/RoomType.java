@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum RoomType {
-    TWO_D(1),
-    THREE_D(2),
-    IMAX(3);
+    TWO_D(0),
+    THREE_D(1),
+    IMAX(2);
 
     private final int value;
 

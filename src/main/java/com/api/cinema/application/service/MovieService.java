@@ -9,11 +9,11 @@ import com.api.cinema.application.usecase.UpdateMovieUseCase;
 import com.api.cinema.domain.model.Movie;
 import com.api.cinema.infrastructure.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MovieService implements CreateMovieUseCase, GetMovieUseCase, UpdateMovieUseCase, DeleteMovieUseCase {
@@ -54,14 +54,7 @@ public class MovieService implements CreateMovieUseCase, GetMovieUseCase, Update
     public MovieDTO update(long id, CreateMovieDTO createMovieDTO) {
         Movie movie = this.movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("It was not possible to locate the provided id."));
-
-        movie.setTitle(createMovieDTO.title());
-        movie.setDescription(createMovieDTO.description());
-        movie.setAudioType(createMovieDTO.audioType());
-        movie.setDuration(createMovieDTO.duration());
-        movie.setClassification(createMovieDTO.classification());
-        movie.setGenre(createMovieDTO.genre());
-
+        BeanUtils.copyProperties(createMovieDTO, movie, "id");
         Movie updatedMovie = this.movieRepository.save(movie);
         return this.objectMapper.convertValue(updatedMovie, MovieDTO.class);
     }
