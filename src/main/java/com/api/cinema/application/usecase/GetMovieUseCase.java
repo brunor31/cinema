@@ -1,11 +1,10 @@
-package com.api.cinema.application.usecase.movie;
+package com.api.cinema.application.usecase;
 
 import com.api.cinema.application.dto.MovieDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GetMovieUseCase {
+    MovieDTO get(long id);
     List<MovieDTO> getAll();
-    Optional<MovieDTO> get(long id);
 }

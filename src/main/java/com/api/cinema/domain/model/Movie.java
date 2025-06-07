@@ -3,8 +3,6 @@ package com.api.cinema.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Duration;
-
 @Entity
 @Data
 public class Movie {
