@@ -1,4 +1,4 @@
-package com.api.cinema.infrastructure.repository;
+package com.api.cinema.domain.repository;
 
 import com.api.cinema.domain.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;

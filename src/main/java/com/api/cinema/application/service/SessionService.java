@@ -1,6 +1,8 @@
 package com.api.cinema.application.service;
 
 import com.api.cinema.application.dto.CreateSessionDTO;
+import com.api.cinema.application.dto.MovieDTO;
+import com.api.cinema.application.dto.RoomDTO;
 import com.api.cinema.application.dto.SessionDTO;
 import com.api.cinema.application.usecase.CreateSessionUseCase;
 import com.api.cinema.application.usecase.DeleteSessionUseCase;
@@ -9,11 +11,10 @@ import com.api.cinema.application.usecase.UpdateSessionUseCase;
 import com.api.cinema.domain.model.Movie;
 import com.api.cinema.domain.model.Room;
 import com.api.cinema.domain.model.Session;
-import com.api.cinema.infrastructure.repository.MovieRepository;
-import com.api.cinema.infrastructure.repository.RoomRepository;
-import com.api.cinema.infrastructure.repository.SessionRepository;
+import com.api.cinema.domain.repository.MovieRepository;
+import com.api.cinema.domain.repository.RoomRepository;
+import com.api.cinema.domain.repository.SessionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,13 @@ public class SessionService implements CreateSessionUseCase, GetSessionUseCase, 
     public SessionDTO update(long id, CreateSessionDTO createSessionDTO) {
         Session session = this.sessionRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("It was not possible to locate the provided id."));
-        BeanUtils.copyProperties(createSessionDTO, session, "id");
+        Movie movie = this.movieRepository.findById(createSessionDTO.movieId()).
+                orElseThrow(() -> new RuntimeException("It was not possible to locate the provided movieId."));
+        Room room = this.roomRepository.findById(createSessionDTO.roomId()).
+                orElseThrow(() -> new RuntimeException("It was not possible to locate the provided roomId."));
+        session.setMovie(movie);
+        session.setRoom(room);
+        session.setStartTime(createSessionDTO.startTime());
         this.sessionRepository.save(session);
         return this.objectMapper.convertValue(session, SessionDTO.class);
     }

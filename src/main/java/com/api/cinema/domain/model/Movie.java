@@ -1,8 +1,12 @@
 package com.api.cinema.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +24,7 @@ public class Movie {
     private int duration;
     private int classification;
     private String genre;
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie")
+    private List<Session> sessions;
 }

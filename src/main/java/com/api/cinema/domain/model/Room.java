@@ -1,5 +1,6 @@
 package com.api.cinema.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,4 +21,7 @@ public class Room {
     private RoomType roomType;
     private int numberOfRows;
     private int numberOfColumns;
+    @JsonIgnore
+    @OneToMany(mappedBy = "room")
+    private List<Seat> seats;
 }

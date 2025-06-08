@@ -7,7 +7,7 @@ import com.api.cinema.application.usecase.DeleteRoomUseCase;
 import com.api.cinema.application.usecase.GetRoomUseCase;
 import com.api.cinema.application.usecase.UpdateRoomUseCase;
 import com.api.cinema.domain.model.Room;
-import com.api.cinema.infrastructure.repository.RoomRepository;
+import com.api.cinema.domain.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
