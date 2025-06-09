@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,19 @@ public class Room {
     private int numberOfRows;
     private int numberOfColumns;
     @JsonIgnore
-    @OneToMany(mappedBy = "room")
-    private List<Seat> seats;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<Seat> seats = new ArrayList<>();
+
+    @PostPersist
+    private void generateSeats() {
+        for (int row = 1; row <= numberOfRows; row++) {
+            for (int col = 1; col <= numberOfColumns; col++) {
+                Seat seat = new Seat();
+                seat.setRoom(this);
+                seat.setSeatNumber(String.format("%c%d", 'A' + (row - 1), col));
+                seat.setAvailable(true);
+                seats.add(seat);
+            }
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package com.api.cinema.adapter.controller;
 
 import com.api.cinema.application.dto.CreateSessionDTO;
+import com.api.cinema.application.dto.SeatDTO;
 import com.api.cinema.application.dto.SessionDTO;
+import com.api.cinema.application.service.SeatService;
 import com.api.cinema.application.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ public class SessionController {
 
     @Autowired
     private SessionService sessionService;
+    @Autowired
+    private SeatService seatService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -29,7 +33,13 @@ public class SessionController {
         this.sessionService.delete(sessionId);
     }
 
-    @GetMapping("{sessionId}")
+    @GetMapping("/{sessionId}/seats")
+    public ResponseEntity<List<SeatDTO>> getSeats(@PathVariable long sessionId) {
+        List<SeatDTO> seatDTOS = this.seatService.getSeats(sessionId);
+        return ResponseEntity.ok(seatDTOS);
+    }
+
+    @GetMapping("/{sessionId}")
     public ResponseEntity<SessionDTO> getSession(@PathVariable long sessionId) {
         SessionDTO sessionDTO = this.sessionService.get(sessionId);
         return ResponseEntity.ok(sessionDTO);
